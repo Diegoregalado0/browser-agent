@@ -86,7 +86,9 @@ export function createSettings({ $, el, icon, send }) {
     button.append(icon("chevron"));
     button.onclick = () => showPage(button.dataset.page);
   }
-  $("settings-back").onclick = showNav;
+  // Where the back button goes: the menu when a page was opened from it, else the list.
+  let onBack = null;
+  $("settings-back").onclick = () => (onBack ? onBack() : showNav());
 
   // Simple options: every [data-setting] control saves itself on change.
 
@@ -362,8 +364,11 @@ export function createSettings({ $, el, icon, send }) {
   const tildePath = (home) => home.replace(/^\/Users\/[^/]+/, "~");
 
   return {
-    // Opens the sheet, on a given page when named.
-    open(name) {
+    // Opens the sheet, on a given page when named. options.onBack replaces going back to
+    // the section list.
+    open(name, options = {}) {
+      onBack = options.onBack ?? null;
+      $("settings-back").title = $("settings-back").ariaLabel = onBack ? "Back to the menu" : "All settings";
       sheet.hidden = false;
       if (name) showPage(name);
       else if (WIDE.matches) showPage(page);

@@ -11,11 +11,8 @@
     <span class="dot" id="dot"></span>
     <span id="model" class="model">connecting…</span>
     <span id="ghost-badge" class="badge" hidden>Ghost</span>
-    <button id="show-browser" class="icon-btn" data-icon="window" title="Bring the agent browser to the front" aria-label="Show the agent browser"></button>
-    <button id="open-history" class="icon-btn" data-icon="history" title="History" aria-label="History"></button>
     <button id="toggle-ghost" class="icon-btn" data-icon="ghost" aria-pressed="false" title="Ghost mode" aria-label="Ghost mode"></button>
-    <button id="new-chat" class="icon-btn" data-icon="compose" title="New conversation" aria-label="New conversation"></button>
-    <button id="open-settings" class="icon-btn" data-icon="settings" title="Settings" aria-label="Settings"></button>
+    <button id="open-menu" class="icon-btn" data-icon="menu" title="Menu" aria-label="Menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="menu"></button>
   </header>
 
   <main id="log"></main>
@@ -40,15 +37,26 @@
     <button id="send" type="submit" class="primary">Send</button>
   </form>
 
-  <aside id="history" class="sheet" hidden aria-label="History">
-    <div class="sheet-head">
-      <h2>History</h2>
-      <button id="close-history" class="icon-btn" data-icon="close" title="Close" aria-label="Close history"></button>
+  <div id="menu-scrim" hidden></div>
+  <aside id="menu" class="menu" hidden aria-label="Menu">
+    <div class="menu-head">
+      <button id="new-chat" class="menu-new" data-icon="compose"><span>New conversation</span></button>
+      <button id="close-menu" class="icon-btn" data-icon="close" title="Close" aria-label="Close menu"></button>
     </div>
-    <div class="sheet-body">
+    <nav class="menu-top" aria-label="Settings">
+      <div class="menu-label">Settings</div>
+      <button data-settings-page="general" data-icon="general"><span>General</span></button>
+      <button data-settings-page="models" data-icon="models"><span>Models</span></button>
+      <button data-settings-page="safety" data-icon="shield"><span>Permissions and safety</span></button>
+      <button data-settings-page="browser" data-icon="window"><span>Browser</span></button>
+      <button data-settings-page="data" data-icon="lock"><span>Data and privacy</span></button>
+      <button id="show-browser" data-icon="window" data-local-only><span>Show the agent browser</span></button>
+    </nav>
+    <section class="menu-bottom" aria-label="Conversations">
+      <div class="menu-label">Conversations</div>
       <input id="history-search" type="search" placeholder="Search conversations" autocomplete="off" />
       <div id="history-list"></div>
-    </div>
+    </section>
   </aside>
 
   <aside id="settings" class="settings" hidden aria-label="Settings">

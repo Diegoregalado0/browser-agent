@@ -24,6 +24,7 @@ let currentSession = null;
 // Stroke icons, 24x24 viewBox.
 const ICONS = {
   window: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   history: '<path d="M3 12a9 9 0 1 0 2.64-6.36L3 8.3"/><path d="M3 3.5V8.3h4.8"/><path d="M12 7.5V12l3 2"/>',
   ghost: '<path d="M12 2.5a7.5 7.5 0 0 0-7.5 7.5v11l2.6-2.2 2.45 2.2L12 18.8l2.45 2.2 2.45-2.2 2.6 2.2V10A7.5 7.5 0 0 0 12 2.5Z"/><path d="M9.5 10h.01M14.5 10h.01"/>',
   compose: '<path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M17.6 3.4a2 2 0 0 1 2.9 2.9L12 14.8l-3.6.9.9-3.6Z"/>',
@@ -292,7 +293,7 @@ function renderHistory() {
     open.onclick = () => {
       if (running) return;
       send({ type: "open_session", id: s.id });
-      $("history").hidden = true;
+      closeMenu();
     };
     const del = el("button", "icon-btn history-delete");
     del.append(icon("trash"));
@@ -423,7 +424,7 @@ const handlers = {
   },
   session(msg) {
     currentSession = msg.id;
-    if (!$("history").hidden) send({ type: "list_sessions" });
+    if (!$("menu").hidden) send({ type: "list_sessions" });
   },
   sessions(msg) {
     sessions = msg.sessions;
@@ -568,35 +569,54 @@ $("permission").addEventListener("click", (e) => {
   if (decision) send({ type: "permission", decision });
 });
 
-$("new-chat").onclick = () => {
-  send({ type: "reset" });
-  resetLog();
-};
-
-$("open-history").onclick = () => {
+// The side menu: settings sections on top, past conversations below.
+function openMenu() {
   settings.close();
-  $("history").hidden = false;
+  $("menu").hidden = false;
+  $("menu-scrim").hidden = false;
+  $("open-menu").setAttribute("aria-expanded", "true");
   $("history-search").value = "";
   renderHistory();
   send({ type: "list_sessions" });
-  $("history-search").focus();
-};
-$("close-history").onclick = () => ($("history").hidden = true);
+  $("close-menu").focus();
+}
+
+function closeMenu() {
+  $("menu").hidden = true;
+  $("menu-scrim").hidden = true;
+  $("open-menu").setAttribute("aria-expanded", "false");
+}
+
+$("open-menu").onclick = () => ($("menu").hidden ? openMenu() : closeMenu());
+$("close-menu").onclick = closeMenu;
+$("menu-scrim").onclick = closeMenu;
 $("history-search").oninput = renderHistory;
+$("new-chat").onclick = () => {
+  closeMenu();
+  send({ type: "reset" });
+  resetLog();
+  $("input").focus();
+};
+for (const button of document.querySelectorAll("[data-settings-page]")) {
+  button.onclick = () => {
+    closeMenu();
+    // Back from a settings page returns to the menu.
+    settings.open(button.dataset.settingsPage, { onBack: openMenu });
+  };
+}
 $("toggle-ghost").onclick = () => {
   if (running) return;
   send({ type: "set_ghost", on: !config?.ghostMode });
 };
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
-  if (!$("history").hidden) $("history").hidden = true;
+  if (!$("menu").hidden) closeMenu();
   else if (settings.isOpen) settings.close();
 });
 
-$("show-browser").onclick = () => send({ type: "open_browser" });
-$("open-settings").onclick = () => {
-  $("history").hidden = true;
-  settings.open();
+$("show-browser").onclick = () => {
+  closeMenu();
+  send({ type: "open_browser" });
 };
 $("close-settings").onclick = () => settings.close();
 
