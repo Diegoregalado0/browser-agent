@@ -10,7 +10,6 @@
   <header>
     <span class="dot" id="dot"></span>
     <span id="model" class="model">connecting…</span>
-    <span id="ghost-badge" class="badge" hidden>Ghost</span>
     <button id="toggle-ghost" class="icon-btn" data-icon="ghost" aria-pressed="false" title="Ghost mode" aria-label="Ghost mode"></button>
     <button id="open-menu" class="icon-btn" data-icon="menu" title="Menu" aria-label="Menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="menu"></button>
   </header>
@@ -342,7 +341,7 @@
               <div class="setting-text">
                 <label class="setting-title" for="ghostMode">Ghost mode</label>
                 <p class="setting-desc">Sessions are not saved and nothing is written to the activity log. Switching starts a new session. Chrome still keeps its own browsing history.</p>
-                <p class="setting-desc locked-note" id="ghost-locked-note" hidden>Always on while the panel is open in an incognito window.</p>
+                <p class="setting-desc locked-note" id="ghost-locked-note" hidden>Ghost mode is on during incognito mode</p>
               </div>
               <input id="ghostMode" type="checkbox" role="switch" class="switch" />
             </div>

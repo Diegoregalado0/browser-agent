@@ -202,7 +202,7 @@ export function createController(host) {
       case "set_ghost": {
         if (agent.running) return reply({ type: "error", text: "Stop the running task before switching Ghost mode." });
         if (!msg.on && ghostLocked()) {
-          return reply({ type: "error", text: "Ghost mode stays on while the panel is open in an incognito window." });
+          return reply({ type: "error", text: "Ghost mode is on during incognito mode" });
         }
         const config = await host.loadConfig();
         config.ghostMode = Boolean(msg.on);

@@ -161,7 +161,7 @@ export function createSettings({ $, el, icon, send }) {
   }
 
   $("ghostMode").addEventListener("change", () => {
-    pendingToast = $("ghostMode").checked ? "Ghost mode on. Started a new session." : "Ghost mode off. Started a new session.";
+    pendingToast = $("ghostMode").checked ? "This session will not be saved" : "Ghost mode off. Started a new session.";
     send({ type: "set_ghost", on: $("ghostMode").checked });
   });
 

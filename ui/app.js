@@ -7,6 +7,8 @@ const token = params.get("t");
 // The extension edition hosts the controller in this page and provides agentHost; the
 // local edition reaches it over a WebSocket.
 const host = globalThis.agentHost;
+const GHOST_TEXT = "This session will not be saved";
+const GHOST_LOCKED_TEXT = "Ghost mode is on during incognito mode";
 // Inside the browser's side panel the "Browser" button has nothing to bring forward.
 if (host || params.get("embed") === "sidebar") document.documentElement.classList.add("in-sidebar");
 // Set by the side panel in an incognito window, where Ghost mode is locked on.
@@ -83,13 +85,8 @@ function emptyState() {
   const ghost = config?.ghostMode;
   const box = el("div", "empty");
   if (ghost) box.append(icon("ghost"));
-  box.append(
-    el("p", null, ghost ? "Ghost mode is on" : "Describe a task. The agent works in its own tabs in the agent browser."),
-  );
-  if (ghost) {
-    const why = config.ghostLocked ? " It stays on while the panel is open in an incognito window." : "";
-    box.append(el("p", "empty-sub", `This session is not saved and nothing is written to the activity log.${why}`));
-  }
+  box.append(el("p", null, ghost ? GHOST_TEXT : "Describe a task. The agent works in its own tabs in the agent browser."));
+  if (ghost && config.ghostLocked) box.append(el("p", "empty-sub", GHOST_LOCKED_TEXT));
   return box;
 }
 
@@ -218,15 +215,10 @@ function renderHeader() {
   $("model").textContent = config.models[config.provider] || "No model selected";
   const ghost = Boolean(config.ghostMode);
   document.documentElement.classList.toggle("ghost", ghost);
-  $("ghost-badge").hidden = !ghost;
   $("toggle-ghost").setAttribute("aria-pressed", String(ghost));
   $("toggle-ghost").disabled = Boolean(config.ghostLocked);
-  $("toggle-ghost").title = config.ghostLocked
-    ? "Ghost mode is always on while the panel is open in an incognito window"
-    : ghost
-      ? "Ghost mode is on: nothing is saved. Click to turn off."
-      : "Ghost mode: start a session that is not saved";
-  $("input").placeholder = ghost ? "Ghost mode: nothing is saved" : "What should it do?";
+  $("toggle-ghost").title = config.ghostLocked ? GHOST_LOCKED_TEXT : ghost ? GHOST_TEXT : "Ghost mode";
+  $("input").placeholder = ghost ? GHOST_TEXT : "What should it do?";
   const empty = log.querySelector(".empty");
   if (empty) empty.replaceWith(emptyState());
 }
