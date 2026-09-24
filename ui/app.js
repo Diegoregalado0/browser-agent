@@ -215,7 +215,7 @@ function setRunning(value) {
 function renderHeader() {
   if (!config) return;
   document.documentElement.dataset.edition = config.edition;
-  $("model").textContent = `${config.provider} · ${config.models[config.provider] || "no model selected"}`;
+  $("model").textContent = config.models[config.provider] || "No model selected";
   const ghost = Boolean(config.ghostMode);
   document.documentElement.classList.toggle("ghost", ghost);
   $("ghost-badge").hidden = !ghost;
