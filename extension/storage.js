@@ -56,7 +56,7 @@ export const sessions = {
   list: async () => (await run("readonly", (store) => store.getAll())).map(metaOf).sort((a, b) => b.updated.localeCompare(a.updated)),
   load: async (id) => {
     const session = await run("readonly", (store) => store.get(checkId(id)));
-    if (!session) throw new Error("That conversation no longer exists.");
+    if (!session) throw new Error("That session no longer exists.");
     return session;
   },
   remove: (id) => run("readwrite", (store) => store.delete(checkId(id))),

@@ -161,7 +161,7 @@ export function createSettings({ $, el, icon, send }) {
   }
 
   $("ghostMode").addEventListener("change", () => {
-    pendingToast = $("ghostMode").checked ? "Ghost mode on. Started a new conversation." : "Ghost mode off. Started a new conversation.";
+    pendingToast = $("ghostMode").checked ? "Ghost mode on. Started a new session." : "Ghost mode off. Started a new session.";
     send({ type: "set_ghost", on: $("ghostMode").checked });
   });
 
@@ -176,11 +176,11 @@ export function createSettings({ $, el, icon, send }) {
     });
   $("delete-all-sessions").onclick = (e) =>
     confirmInline(e.currentTarget, {
-      question: "Delete every saved conversation?",
+      question: "Delete every saved session?",
       confirmLabel: "Delete all",
       onConfirm: () => {
         send({ type: "delete_all_sessions" });
-        toast("Deleted all conversations");
+        toast("Deleted all sessions");
         send({ type: "data_info" });
       },
     });
@@ -404,7 +404,7 @@ export function createSettings({ $, el, icon, send }) {
       },
       data_info(msg) {
         $("tokens-today").textContent = `Used today: ${msg.tokensToday.toLocaleString()} tokens.`;
-        $("sessions-count").textContent = `${msg.sessions} saved conversation${msg.sessions === 1 ? "" : "s"}`;
+        $("sessions-count").textContent = `${msg.sessions} saved session${msg.sessions === 1 ? "" : "s"}`;
         $("activity-size").textContent = msg.activityBytes ? formatBytes(msg.activityBytes) : "empty";
         for (const node of sheet.querySelectorAll("[data-path]")) {
           node.textContent = tildePath(msg.home) + (node.dataset.path ? `/${node.dataset.path}` : "");

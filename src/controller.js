@@ -79,7 +79,7 @@ export function createController(host) {
     try {
       await host.sessions.save({ ...session, messages: agent.messages, usage: agent.usage });
     } catch (err) {
-      console.error(`Could not save the conversation: ${err.message}`);
+      console.error(`Could not save the session: ${err.message}`);
       return;
     }
     if (created) broadcast({ type: "session", id: session.id, title: session.title });
@@ -176,7 +176,7 @@ export function createController(host) {
         reply({ type: "sessions", sessions: await host.sessions.list(), current: session?.id ?? null });
         return;
       case "open_session": {
-        if (agent.running) return reply({ type: "error", text: "Stop the running task before opening another conversation." });
+        if (agent.running) return reply({ type: "error", text: "Stop the running task before opening another session." });
         const saved = await host.sessions.load(msg.id);
         agent.restore(saved);
         resolvePermission("deny");
@@ -187,14 +187,14 @@ export function createController(host) {
       }
       case "delete_session":
         if (msg.id === session?.id) {
-          if (agent.running) return reply({ type: "error", text: "Stop the running task before deleting this conversation." });
+          if (agent.running) return reply({ type: "error", text: "Stop the running task before deleting this session." });
           clearConversation();
         }
         await host.sessions.remove(msg.id);
         broadcast({ type: "sessions", sessions: await host.sessions.list(), current: session?.id ?? null });
         return;
       case "delete_all_sessions":
-        if (agent.running) return reply({ type: "error", text: "Stop the running task before deleting conversations." });
+        if (agent.running) return reply({ type: "error", text: "Stop the running task before deleting sessions." });
         await host.sessions.removeAll();
         if (session) clearConversation();
         broadcast({ type: "sessions", sessions: [], current: null });

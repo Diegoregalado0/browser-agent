@@ -39,12 +39,11 @@
 
   <div id="menu-scrim" hidden></div>
   <aside id="menu" class="menu" hidden aria-label="Menu">
-    <div class="menu-head">
-      <button id="new-chat" class="menu-new" data-icon="compose"><span>New conversation</span></button>
-      <button id="close-menu" class="icon-btn" data-icon="close" title="Close" aria-label="Close menu"></button>
-    </div>
     <nav class="menu-top" aria-label="Settings">
-      <div class="menu-label">Settings</div>
+      <div class="menu-label menu-label-row">
+        <span>Settings</span>
+        <button id="close-menu" class="icon-btn" data-icon="close" title="Close" aria-label="Close menu"></button>
+      </div>
       <button data-settings-page="general" data-icon="general"><span>General</span></button>
       <button data-settings-page="models" data-icon="models"><span>Models</span></button>
       <button data-settings-page="safety" data-icon="shield"><span>Permissions and safety</span></button>
@@ -52,9 +51,10 @@
       <button data-settings-page="data" data-icon="lock"><span>Data and privacy</span></button>
       <button id="show-browser" data-icon="window" data-local-only><span>Show the agent browser</span></button>
     </nav>
-    <section class="menu-bottom" aria-label="Conversations">
-      <div class="menu-label">Conversations</div>
-      <input id="history-search" type="search" placeholder="Search conversations" autocomplete="off" />
+    <section class="menu-bottom" aria-label="Sessions">
+      <div class="menu-label">Sessions</div>
+      <button id="new-chat" class="menu-new" data-icon="compose"><span>New session</span></button>
+      <input id="history-search" type="search" placeholder="Search sessions" autocomplete="off" />
       <div id="history-list"></div>
     </section>
   </aside>
@@ -110,7 +110,7 @@
             <div class="setting">
               <div class="setting-text">
                 <span class="setting-title">Reset settings to defaults</span>
-                <p class="setting-desc">Restores every setting to its default. API keys, saved conversations, and Ghost mode are kept.</p>
+                <p class="setting-desc">Restores every setting to its default. API keys, saved sessions, and Ghost mode are kept.</p>
               </div>
               <button id="reset-settings" type="button" class="danger-outline">Reset</button>
             </div>
@@ -122,7 +122,7 @@
             <div class="setting">
               <div class="setting-text">
                 <label class="setting-title" for="provider">Provider</label>
-                <p class="setting-desc">The service that runs the agent. You can switch in the middle of a conversation.</p>
+                <p class="setting-desc">The service that runs the agent. You can switch in the middle of a session.</p>
               </div>
               <select id="provider">
                 <option value="anthropic">Anthropic</option>
@@ -173,7 +173,7 @@
             <div class="setting">
               <div class="setting-text">
                 <label class="setting-title" for="thinking">Show model thinking</label>
-                <p class="setting-desc">Shows the model's reasoning summaries in the conversation when the provider offers them.</p>
+                <p class="setting-desc">Shows the model's reasoning summaries in the session when the provider offers them.</p>
               </div>
               <input id="thinking" type="checkbox" role="switch" class="switch" data-setting="thinking" />
             </div>
@@ -341,7 +341,7 @@
             <div class="setting">
               <div class="setting-text">
                 <label class="setting-title" for="ghostMode">Ghost mode</label>
-                <p class="setting-desc">Conversations are not saved to history and nothing is written to the activity log. Switching starts a new conversation. Chrome still keeps its own browsing history.</p>
+                <p class="setting-desc">Sessions are not saved and nothing is written to the activity log. Switching starts a new session. Chrome still keeps its own browsing history.</p>
                 <p class="setting-desc locked-note" id="ghost-locked-note" hidden>Always on while the panel is open in an incognito window.</p>
               </div>
               <input id="ghostMode" type="checkbox" role="switch" class="switch" />
@@ -352,7 +352,7 @@
           <div class="setting-group">
             <div class="setting">
               <div class="setting-text">
-                <span class="setting-title">Conversation history</span>
+                <span class="setting-title">Saved sessions</span>
                 <p class="setting-desc"><span id="sessions-count">…</span><span data-local-only> in <span class="path" data-path="sessions"></span></span><span data-extension-only>, kept only in this browser profile</span>. Screenshots are not saved.</p>
               </div>
               <button id="delete-all-sessions" type="button" class="danger-outline">Delete all</button>

@@ -81,7 +81,7 @@ panel stops the task. For Ollama, start it with `OLLAMA_ORIGINS=chrome-extension
 | Mistral | `mistral-medium-latest` | Sends only the newest 4 screenshots per request. |
 | Ollama | none | Needs a tool-capable model; a vision model to read screenshots. |
 
-The history is provider-neutral, so the provider can change mid-conversation.
+The history is provider-neutral, so the provider can change mid-session.
 
 ## Tools
 
@@ -118,11 +118,11 @@ it is working in sits in a tab group labeled "Agent" while the task runs.
 | Data | Local | Extension |
 |---|---|---|
 | Settings and keys | `~/.browser-agent/config.json` (mode 600) | `chrome.storage.local` |
-| Conversations | `~/.browser-agent/sessions/` | IndexedDB |
+| Sessions | `~/.browser-agent/sessions/` | IndexedDB |
 | Activity log | `~/.browser-agent/activity.log` | none |
 | Daily token count | `~/.browser-agent/usage.json` | `chrome.storage.local` |
 
-Screenshots are never saved. Ghost mode saves no conversation and writes no log entries;
+Screenshots are never saved. Ghost mode saves no session and writes no log entries;
 it is always on in incognito windows.
 
 ## Layout

@@ -88,7 +88,7 @@ function emptyState() {
   );
   if (ghost) {
     const why = config.ghostLocked ? " It stays on while the panel is open in an incognito window." : "";
-    box.append(el("p", "empty-sub", `This conversation is not saved to history and nothing is written to the activity log.${why}`));
+    box.append(el("p", "empty-sub", `This session is not saved and nothing is written to the activity log.${why}`));
   }
   return box;
 }
@@ -225,7 +225,7 @@ function renderHeader() {
     ? "Ghost mode is always on while the panel is open in an incognito window"
     : ghost
       ? "Ghost mode is on: nothing is saved. Click to turn off."
-      : "Ghost mode: start a conversation that is not saved";
+      : "Ghost mode: start a session that is not saved";
   $("input").placeholder = ghost ? "Ghost mode: nothing is saved" : "What should it do?";
   const empty = log.querySelector(".empty");
   if (empty) empty.replaceWith(emptyState());
@@ -276,7 +276,7 @@ function renderHistory() {
   const shown = sessions.filter((s) => !query || s.title.toLowerCase().includes(query));
   list.replaceChildren();
   if (!shown.length) {
-    list.append(el("div", "history-empty", query ? "No conversations match." : "Conversations you have will show up here."));
+    list.append(el("div", "history-empty", query ? "No sessions match." : "Your sessions will show up here."));
     return;
   }
   let bucket = null;
@@ -297,7 +297,7 @@ function renderHistory() {
     };
     const del = el("button", "icon-btn history-delete");
     del.append(icon("trash"));
-    del.title = "Delete conversation";
+    del.title = "Delete session";
     del.setAttribute("aria-label", `Delete ${s.title}`);
     del.onclick = () => {
       const confirm = el("div", "history-confirm");
@@ -305,7 +305,7 @@ function renderHistory() {
       const no = el("button", null, "Cancel");
       yes.onclick = () => send({ type: "delete_session", id: s.id });
       no.onclick = () => renderHistory();
-      confirm.append(el("span", null, "Delete this conversation?"), yes, no);
+      confirm.append(el("span", null, "Delete this session?"), yes, no);
       row.replaceChildren(confirm);
       no.focus();
     };
@@ -519,7 +519,7 @@ const handlers = {
   },
   usage(msg) {
     const u = msg.usage;
-    $("model").title = `This conversation: ${u.input.toLocaleString()} input tokens (${u.cachedInput.toLocaleString()} cached), ${u.output.toLocaleString()} output tokens`;
+    $("model").title = `This session: ${u.input.toLocaleString()} input tokens (${u.cachedInput.toLocaleString()} cached), ${u.output.toLocaleString()} output tokens`;
     activity.setOutputTokens(msg.taskOutput ?? 0);
   },
 };
