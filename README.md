@@ -71,6 +71,21 @@ Each window's panel runs its own agent, which only works in that window's tabs. 
 the browser profile, are never synced, and are sent only to their provider. Closing the
 panel stops the task. For Ollama, start it with `OLLAMA_ORIGINS=chrome-extension://*`.
 
+## Interface
+
+The panel header shows the current model, a Ghost mode toggle, and the menu button.
+
+The menu opens over the chat and has two parts:
+
+- **Settings**: General, Models, Permissions and safety, Browser, and Data and privacy.
+  Each opens its settings page; Back returns to the menu. Changes save immediately.
+- **Sessions**: New session, a search field, and past sessions grouped by date. Select one
+  to reopen it and continue with its full history, or delete it.
+
+Close the menu with its close button, Escape, or a click outside it.
+
+Ghost mode starts a session that is not saved. It is always on in incognito windows.
+
 ## Providers
 
 | Provider | Default model | Notes |
@@ -129,7 +144,7 @@ it is always on in incognito windows.
 
 ```
 bin/browser-agent.js      CLI and launcher
-src/controller.js         conversation state, sessions, Ghost mode, UI messages
+src/controller.js         session state, saved sessions, Ghost mode, UI messages
 src/agent.js              agent loop
 src/browser-tools.js      page tools, on top of a transport
 src/transport-cdp.js      transport: DevTools port (local)
